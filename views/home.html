@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Signed in page</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Welcome</h2>
+    <form id="mutualFundForm">
+        <select name="MututalFundFamily" id="MFF">
+            <option value="Aditya Birla Sun Life Mutual Fund">Aditya Birla Sun Life Mutual Fund</option>
+            <option value="Axis Mutual Fund">Axis Mutual Fund</option>
+            <option value="Bajaj Finserv Mutual Fund">Bajaj Finserv Mutual Fund</option>
+            <option value="Bandhan Mutual Fund">Bandhan Mutual Fund</option>
+            <option value="Baroda BNP Paribas Mutual Fund">Baroda BNP Paribas Mutual Fund</option>
+            <option value="Canara Robeco Mutual Fund">Canara Robeco Mutual Fund</option>
+            <option value="DSP Mutual Fund">DSP Mutual Fund</option>
+            <option value="Franklin Templeton Mutual Fund">Franklin Templeton Mutual Fund</option>
+            <option value="HDFC Mutual Fund">HDFC Mutual Fund</option>
+            <option value="HSBC Mutual Fund">HSBC Mutual Fund</option>
+            <option value="ICICI Prudential Mutual Fund">ICICI Prudential Mutual Fund</option>
+            <option value="Invesco Mutual Fund">Invesco Mutual Fund</option>
+            <option value="ITI Mutual Fund">ITI Mutual Fund</option>
+            <option value="Kotak Mahindra Mutual Fund">Kotak Mahindra Mutual Fund</option>
+            <option value="LIC Mutual Fund">LIC Mutual Fund</option>
+            <option value="Mirae Asset Mutual Fund">Mirae Asset Mutual Fund</option>
+            <option value="Nippon India Mutual Fund">Nippon India Mutual Fund</option>
+            <option value="SBI Mutual Fund">SBI Mutual Fund</option>
+            <option value="Sundaram Mutual Fund">Sundaram Mutual Fund</option>
+            <option value="Trust Mutual Fund">Trust Mutual Fund</option>
+            <option value="UTI Mutual Fund">UTI Mutual Fund</option>
+            <option value="PGIM India Mutual Fund">PGIM India Mutual Fund</option>
+            <option value="Tata Mutual Fund">Tata Mutual Fund</option>
+            <option value="Union Mutual Fund">Union Mutual Fund</option>
+            <option value="Bank of India Mutual Fund">Bank of India Mutual Fund</option>
+            <option value="360 ONE Mutual Fund (Formerly Known as IIFL Mutual Fund)">360 ONE Mutual Fund (Formerly Known as IIFL Mutual Fund)</option>
+            <option value="Groww Mutual Fund">Groww Mutual Fund</option>
+            <option value="JM Financial Mutual Fund">JM Financial Mutual Fund</option>
+            <option value="Mahindra Manulife Mutual Fund">Mahindra Manulife Mutual Fund</option>
+            <option value="Quantum Mutual Fund">Quantum Mutual Fund</option>
+            <option value="quant Mutual Fund">quant Mutual Fund</option>
+            <option value="Edelweiss Mutual Fund">Edelweiss Mutual Fund</option>
+            <option value="Motilal Oswal Mutual Fund">Motilal Oswal Mutual Fund</option>
+            <option value="Navi Mutual Fund">Navi Mutual Fund</option>
+            <option value="PPFAS Mutual Fund">PPFAS Mutual Fund</option>
+            <option value="WhiteOak Capital Mutual Fund">WhiteOak Capital Mutual Fund</option>
+            <option value="Helios Mutual Fund">Helios Mutual Fund</option>
+            <option value="NJ Mutual Fund">NJ Mutual Fund</option>
+            <option value="Samco Mutual Fund">Samco Mutual Fund</option>
+            <option value="Shriram Mutual Fund">Shriram Mutual Fund</option>
+            <option value="Taurus Mutual Fund">Taurus Mutual Fund</option>
+            <option value="Zerodha Mutual Fund">Zerodha Mutual Fund</option>
+            <option value="Old Bridge Mutual Fund">Old Bridge Mutual Fund</option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="fundsData"></div> <!-- Div to display fetched mutual funds data -->
+
+    <script>
+        // Event listener for the form submission
+        document.getElementById('mutualFundForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the page from reloading
+
+            // Get the selected mutual fund family
+            const mutualFundFamily = document.getElementById('MFF').value;
+            console.log("Selected Mutual Fund Family:", mutualFundFamily);
+
+            // Make the backend request to fetch the mutual funds data
+            fetch('http://localhost:8000/viewData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ MutualFundFamily: mutualFundFamily })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Generate the table dynamically
+                    generateTable(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    document.getElementById('fundsData').innerHTML = 'Error fetching data';
+                });
+        });
+
+        // Function to generate a dynamic table from the fetched data
+        function generateTable(data) {
+            const tableContainer = document.getElementById('fundsData');
+            tableContainer.innerHTML = ''; // Clear any previous data
+
+            if (data.length === 0) {
+                tableContainer.innerHTML = 'No data available';
+                return;
+            }
+
+            // Create table elements
+            const table = document.createElement('table');
+            const headerRow = document.createElement('tr');
+            const headers = ['Scheme Code', 'Scheme Name', 'ISIN (Growth)', 'ISIN (Reinvestment)', 'Net Asset Value', 'Date', 'Scheme Type', 'Scheme Category', 'Mutual Fund Family'];
+
+            // Create header row
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+            table.appendChild(headerRow);
+
+            // Create data rows
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                const cells = [
+                    item.Scheme_Code,
+                    item.Scheme_Name,
+                    item.ISIN_Div_Payout_ISIN_Growth,
+                    item.ISIN_Div_Reinvestment,
+                    item.Net_Asset_Value,
+                    item.Date,
+                    item.Scheme_Type,
+                    item.Scheme_Category,
+                    item.Mutual_Fund_Family
+                ];
+
+                cells.forEach(cellData => {
+                    const td = document.createElement('td');
+                    td.textContent = cellData;
+                    row.appendChild(td);
+                });
+
+                table.appendChild(row);
+            });
+
+            // Append the table to the container
+            tableContainer.appendChild(table);
+        }
+    </script>
+</body>
+
+</html>
