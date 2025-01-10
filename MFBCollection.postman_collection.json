@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "34ad22e7-47fb-44b3-9be8-27ba3fce5a05",
+		"name": "MFBCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"3@gmail.com\",\r\n    \"password\": \"1334\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"3@gmail.com\",\r\n    \"password\": \"1334\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rapidAPI",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-rapidapi-key",
+						"value": "179ceb7876msh3ec81d924502614p19e294jsn1f105771ae6c",
+						"type": "default"
+					},
+					{
+						"key": "x-rapidapi-host",
+						"value": "latest-mutual-fund-nav.p.rapidapi.com",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://latest-mutual-fund-nav.p.rapidapi.com/latest?Mutual_Fund_Family=Aditya Birla Sun Life Mutual Fund&Scheme_Type=Open",
+					"protocol": "https",
+					"host": [
+						"latest-mutual-fund-nav",
+						"p",
+						"rapidapi",
+						"com"
+					],
+					"path": [
+						"latest"
+					],
+					"query": [
+						{
+							"key": "Mutual_Fund_Family",
+							"value": "Aditya Birla Sun Life Mutual Fund"
+						},
+						{
+							"key": "Scheme_Type",
+							"value": "Open"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMFData",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"MutualFundFamily\":\"Aditya Birla Sun Life Mutual Fund\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/viewData",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"viewData"
+					],
+					"query": [
+						{
+							"key": "value",
+							"value": "value",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
